@@ -63,10 +63,17 @@ public class AntreApplication {
         		String mealName = daymenu.get(i).text();
         		if(mealName.isEmpty()) continue;
         		if(mealName.startsWith("Cena")) {
-        			Matcher matcher = Pattern.compile("\\d+").matcher(mealName);
-        			matcher.find();
-        			mealPrice = Double.valueOf(matcher.group());
-        			mealWithoutSoup = Double.valueOf(matcher.group());        			
+        			
+        			//TODO EXTRACT
+        			Matcher matcher = Pattern.compile("-?\\d+").matcher(mealName);
+        			List<Double> matches = new ArrayList<Double>();
+        			while(matcher.find()) {
+        				matches.add(Double.valueOf(matcher.group()));
+        			}
+        			mealPrice = matches.get(0);
+        			mealWithoutSoup = matches.get(1);
+        			
+        			System.out.println(mealPrice + ","+mealWithoutSoup);      			
         		} else {	
         			meals.add(new Meal("", mealName, null, null));
         		}
