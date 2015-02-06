@@ -60,6 +60,7 @@ public class AntreApplication {
         	Double mealPrice = 0.0d;
         	for(int i = 1; i< daymenu.size();i++) {
         		String mealName = daymenu.get(i).text();
+        		if(mealName.isEmpty()) continue;
         		if(mealName.startsWith("Cena")) {
         			mealName = mealName.replaceAll("\\D+","");
         			mealPrice = Double.valueOf(mealName);
