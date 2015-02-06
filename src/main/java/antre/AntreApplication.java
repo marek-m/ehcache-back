@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import antre.model.DayMenu;
+import antre.model.Meal;
 
 @EnableScheduling
 @RestController
@@ -35,6 +36,8 @@ public class AntreApplication {
         }
         
         Elements days = doc.select("ul#subList2 li:matches(Pon|Wt|Śr|Czw|Pią)");
+        List<Meal> meals = new ArrayList<Meal>();
+        
         for(Element day : days ) {
         	DayMenu dayMenu = new DayMenu();
         	System.out.println(day.toString());
@@ -48,13 +51,11 @@ public class AntreApplication {
         	System.out.println(dayname.text());
         	System.out.println("---------------------");
         	
-        	dayMenu.setSoup(daymenu.first().text());
-        	dayMenu.setMealA(daymenu.get(1).text());
-        	dayMenu.setMealB(daymenu.get(2).text());
-
-        	//for(Element menupos : daymenu) {
-        	//	System.out.println(menupos.text());
-        	//}
+        	
+        	meals.add(new Meal("", daymenu.first().text(), null, null));
+        	for(int i = 1; i< daymenu.size();i++) {
+        		meals.add(new Meal("", daymenu.get(i).text(), null, null));
+        	}
         	System.out.println("");
         	result.add(dayMenu);
         	
@@ -64,10 +65,7 @@ public class AntreApplication {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-    @Scheduled(fixedRate = 86400)
-    public void reportCurrentTime() {
-        System.out.println("The time is now " + dateFormat.format(new Date()));
-    }
+
     
     //ANTR FORMAT = [FullDayNaem dd.MM.yyyy]
     private Date getDateFromString(String date) throws ParseException {
@@ -84,6 +82,10 @@ public class AntreApplication {
         
     }
     
-    //TESTs
+    //SCHEDULER    
+    @Scheduled(fixedRate = 86400)
+    public void reportCurrentTime() {
+        System.out.println("The time is now " + dateFormat.format(new Date()));
+    }
 
 }
