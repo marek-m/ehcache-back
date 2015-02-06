@@ -25,7 +25,7 @@ import antre.model.DayMenu;
 @EnableAutoConfiguration
 public class AntreApplication {
 
-    @RequestMapping("/week2") 
+    @RequestMapping("/week") 
     List<DayMenu> getTodayMenu() throws ParseException {
     	List<DayMenu> result = new ArrayList<DayMenu>();
         Document doc = null;
@@ -64,7 +64,7 @@ public class AntreApplication {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 86400)
     public void reportCurrentTime() {
         System.out.println("The time is now " + dateFormat.format(new Date()));
     }
