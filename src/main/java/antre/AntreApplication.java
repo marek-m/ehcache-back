@@ -36,15 +36,14 @@ public class AntreApplication {
         }
         
         Elements days = doc.select("ul#subList2 li:matches(Pon|Wt|Śr|Czw|Pią)");
-        List<Meal> meals = new ArrayList<Meal>();
         
         for(Element day : days ) {
         	DayMenu dayMenu = new DayMenu();
+            List<Meal> meals = new ArrayList<Meal>();
         	System.out.println(day.toString());
         	Element dayname = day.select("h2").first();  //DATA
         	
         	dayMenu.setDate(getDateFromString(dayname.text()));
-        	
         	Elements daymenu = day.select("h4>p:has(strong)");
         	
         	
@@ -56,6 +55,7 @@ public class AntreApplication {
         	for(int i = 1; i< daymenu.size();i++) {
         		meals.add(new Meal("", daymenu.get(i).text(), null, null));
         	}
+        	dayMenu.setMeals(meals);
         	System.out.println("");
         	result.add(dayMenu);
         	

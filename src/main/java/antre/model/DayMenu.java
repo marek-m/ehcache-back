@@ -6,6 +6,7 @@ import java.util.List;
 public class DayMenu {
 
 	private Date date;
+	private List<Meal> meals;
 	
 	public DayMenu(Date date, List<Meal> meals) {
 		super();
@@ -22,5 +23,14 @@ public class DayMenu {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
+	public List<Meal> getMeals() {
+		return meals;
+	}
+
+	public void setMeals(List<Meal> meals) {
+		this.meals = meals;
+	}
+	
 	
 }
