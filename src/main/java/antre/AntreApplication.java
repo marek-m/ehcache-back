@@ -66,10 +66,7 @@ public class AntreApplication {
         			Matcher matcher = Pattern.compile("\\d+").matcher(mealName);
         			matcher.find();
         			mealPrice = Double.valueOf(matcher.group());
-        			mealWithoutSoup = Double.valueOf(matcher.group());
-        			
-        			mealName = mealName.replaceAll("\\D+","");
-        			mealPrice = Double.valueOf(mealName);
+        			mealWithoutSoup = Double.valueOf(matcher.group());        			
         		} else {	
         			meals.add(new Meal("", mealName, null, null));
         		}
