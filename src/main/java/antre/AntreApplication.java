@@ -58,10 +58,16 @@ public class AntreApplication {
         	meals.add(new Meal("", daymenu.first().text(), null, null));
         	
         	Double mealPrice = 0.0d;
+        	Double mealWithoutSoup = 0.0d;
         	for(int i = 1; i< daymenu.size();i++) {
         		String mealName = daymenu.get(i).text();
         		if(mealName.isEmpty()) continue;
         		if(mealName.startsWith("Cena")) {
+        			Matcher matcher = Pattern.compile("\\d+").matcher(mealName);
+        			matcher.find();
+        			mealPrice = Double.valueOf(matcher.group());
+        			mealWithoutSoup = Double.valueOf(matcher.group());
+        			
         			mealName = mealName.replaceAll("\\D+","");
         			mealPrice = Double.valueOf(mealName);
         		} else {	
@@ -71,6 +77,9 @@ public class AntreApplication {
         	for(Meal m : meals) {
         		m.setPrice(mealPrice);
         	}
+        	
+        	meals.get(0).setPrice(mealPrice - mealWithoutSoup);
+        	
         	dayMenu.setMeals(meals);
         	System.out.println("");
         	result.add(dayMenu);
