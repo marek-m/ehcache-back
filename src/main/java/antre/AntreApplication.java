@@ -25,7 +25,7 @@ import antre.model.DayMenu;
 @EnableAutoConfiguration
 public class AntreApplication {
 
-    @RequestMapping("/week") 
+    @RequestMapping("/week2") 
     List<DayMenu> getTodayMenu() throws ParseException {
     	List<DayMenu> result = new ArrayList<DayMenu>();
         Document doc = null;
