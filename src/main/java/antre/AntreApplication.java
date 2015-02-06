@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -33,6 +35,8 @@ public class AntreApplication {
         try {
             doc = Jsoup.connect("http://www.wantrejce.pl").get();
         } catch (IOException e) {
+        	//TODO problem with connection... probably. Do something!
+        	System.out.println("IOException:" + e.getMessage());
         }
         
         Elements days = doc.select("ul#subList2 li:matches(Pon|Wt|Śr|Czw|Pią)");
@@ -49,11 +53,22 @@ public class AntreApplication {
         	
         	System.out.println(dayname.text());
         	System.out.println("---------------------");
-        	
-        	
+        	 
+        	//soup
         	meals.add(new Meal("", daymenu.first().text(), null, null));
+        	
+        	Double mealPrice = 0.0d;
         	for(int i = 1; i< daymenu.size();i++) {
-        		meals.add(new Meal("", daymenu.get(i).text(), null, null));
+        		String mealName = daymenu.get(i).text();
+        		if(mealName.startsWith("Cena")) {
+        			mealName = mealName.replaceAll("\\D+","");
+        			mealPrice = Double.valueOf(mealName);
+        		} else {	
+        			meals.add(new Meal("", mealName, null, null));
+        		}
+        	}
+        	for(Meal m : meals) {
+        		m.setPrice(mealPrice);
         	}
         	dayMenu.setMeals(meals);
         	System.out.println("");
