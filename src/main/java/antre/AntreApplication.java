@@ -79,7 +79,9 @@ public class AntreApplication {
         		}
         	}
         	for(Meal m : meals) {
-        		m.setPrice(mealPrice);
+        		m.setPrice(mealWithoutSoup);
+        		
+        		m.getName();
         	}
         	
         	meals.get(0).setPrice(mealPrice - mealWithoutSoup);
@@ -92,6 +94,29 @@ public class AntreApplication {
         return result;
     }
 
+    private static List<String> getImagesForName(String name) {
+    	List<String> result = new ArrayList<String>();
+    	
+    	//GET IMAGES FROM GOOGLE (search api)
+    	
+    	
+    	
+    	return result;
+    }
+    
+    private static String createAddressForImageSearch(String description) {
+    	String cx = "016012965037667193616:tvoagxbs5sy";
+    	String cr = "pl";
+    	String q = description;
+    	String searchType = "image";
+    	int num = 10;
+    	String fields = "items/link";
+    	String key = "AIzaSyBGIvRqlYoec4l6n-TUoMsRV3qrb4XSlCI";
+    	
+    	return "";
+    }
+    
+    
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
 
