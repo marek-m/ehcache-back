@@ -5,13 +5,27 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 @Entity
-public class User implements Serializable {
+@SequenceGenerator(name="User_SEQ", sequenceName="User_SEQ", initialValue=1, allocationSize=1)
+public class User1 implements Serializable {
 
-    @Id
-    @GeneratedValue
+	
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	
+	public User1() {
+		super();
+	}
+
+	@Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="User_SEQ")
     private Long id;
 
     @Column(nullable = false)
@@ -22,12 +36,7 @@ public class User implements Serializable {
 
     // ... additional members, often include @OneToMany mappings
 
-    protected User() {
-        // no-args constructor required by JPA spec
-        // this one is protected since it shouldn't be used directly
-    }
-
-    public User(String name, String state) {
+    public User1(String name, String state) {
         this.name = name;
     }
 
