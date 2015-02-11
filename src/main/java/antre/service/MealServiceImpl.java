@@ -165,7 +165,7 @@ public class MealServiceImpl implements MealService {
 		Gson gson = new Gson();
 		GoogleSearchObject page = gson.fromJson(json, GoogleSearchObject.class);
 
-		Thread.sleep(2000); //GOOGLE RESTRICTION 1request/user/1second
+		Thread.sleep(3000); //GOOGLE RESTRICTION 1request/user/1second
 		return page;
 	}
 

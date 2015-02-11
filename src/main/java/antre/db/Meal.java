@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 
 @Entity
-@SequenceGenerator(name="Meal_SEQ", sequenceName="Meal_SEQ", initialValue=1, allocationSize=1)
+//@SequenceGenerator(name="Meal_SEQ", sequenceName="Meal_SEQ", initialValue=1, allocationSize=1)
 public class Meal implements Serializable {
 
 	/**
@@ -21,7 +21,7 @@ public class Meal implements Serializable {
 	private static final long serialVersionUID = -5190761033434267677L;
 	
 	@Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="Meal_SEQ")
+    @GeneratedValue//(strategy=GenerationType.SEQUENCE, generator="Meal_SEQ")
 	private Long id;
 
 	@Column(nullable=false)
