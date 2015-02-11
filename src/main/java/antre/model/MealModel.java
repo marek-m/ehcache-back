@@ -2,7 +2,7 @@ package antre.model;
 
 import java.util.List;
 
-public class Meal {
+public class MealModel {
 	
 	private String id;
 	private String name;
@@ -10,7 +10,7 @@ public class Meal {
 	private Double price;
 	
 	
-	public Meal(String id, String name, List<String> images, Double price) {
+	public MealModel(String id, String name, List<String> images, Double price) {
 		super();
 		this.id = id;
 		this.name = name;
