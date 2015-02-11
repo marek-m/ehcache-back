@@ -133,15 +133,15 @@ public class MealServiceImpl implements MealService {
 		}
 		//got meals for whole week
 		//get images from google
-//		for(Meal m : meals) {
-//			GoogleSearchObject gso = getImagesForDescription(m.getName());
-//			String images = "";
-//			for(Item item : gso.getItems()) {
-//				System.out.println("GOT IMAGE:"+item.getLink());
-//				images += item.getLink() + "|";
-//			}
-//			m.setImages(images);
-//		}
+		for(Meal m : meals) {
+			GoogleSearchObject gso = getImagesForDescription(m.getName());
+			String images = "";
+			for(Item item : gso.getItems()) {
+				System.out.println("GOT IMAGE:"+item.getLink());
+				images += item.getLink() + "|";
+			}
+			m.setImages(images);
+		}
 		
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
@@ -165,7 +165,7 @@ public class MealServiceImpl implements MealService {
 		Gson gson = new Gson();
 		GoogleSearchObject page = gson.fromJson(json, GoogleSearchObject.class);
 
-		Thread.sleep(3000); //GOOGLE RESTRICTION 1request/user/1second
+		Thread.sleep(3500); //GOOGLE RESTRICTION 1request/user/1second
 		return page;
 	}
 
