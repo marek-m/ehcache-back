@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.jodah.typetools.TypeResolver;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -157,7 +155,7 @@ public abstract class DaoTemplateImpl<T> {
 
 	@SuppressWarnings("unchecked")
 	protected Class<T> getClazz() {
-		Class<?> c = TypeResolver.resolveRawArgument(this.getClass(), DaoTemplateImpl.class);
+		Class<?> c = TypeResolver.resolveArgument(this.getClass(), DaoTemplateImpl.class);
 		return (Class<T>) c;
 	}
 
