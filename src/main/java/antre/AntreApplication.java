@@ -9,12 +9,16 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.sql.DataSource;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +30,10 @@ import antre.model.Meal;
 @EnableScheduling
 @RestController
 @EnableAutoConfiguration
+@ImportResource({"classpath*:applicationContext.xml"})
 public class AntreApplication {
-
+	@Autowired DataSource dataSource;
+	
     @RequestMapping("/week") 
     List<DayMenu> getTodayMenu() throws ParseException {
     	List<DayMenu> result = new ArrayList<DayMenu>();
