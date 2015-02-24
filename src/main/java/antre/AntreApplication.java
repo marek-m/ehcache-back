@@ -140,8 +140,8 @@ public class AntreApplication {
 		mealService.initWeek();
 	}
 
-	// SCHEDULER
-	@Scheduled(fixedDelay=60000) //every 10 min
+	// SCHEDULER DB TEST
+	@Scheduled(fixedDelay=60000*15) //every 10 min
 	public void dbConenctionRefresh() throws Exception {
 		mealDao.dbTest();
 	}
