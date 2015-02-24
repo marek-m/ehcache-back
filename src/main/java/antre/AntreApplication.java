@@ -29,6 +29,7 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import antre.dao.MealDao;
 import antre.model.DayMenu;
 import antre.model.MealModel;
 import antre.model.googlesearchapi.GoogleSearchObject;
@@ -45,6 +46,8 @@ public class AntreApplication {
 
 	@Autowired
 	MealService mealService;
+	@Autowired
+	MealDao mealDao;
 
 	
 	@RequestMapping("/week")
@@ -137,6 +140,12 @@ public class AntreApplication {
 		mealService.initWeek();
 	}
 
+	// SCHEDULER
+	@Scheduled(fixedDelay=60000) //every 10 min
+	public void dbConenctionRefresh() throws Exception {
+		mealDao.dbTest();
+	}
+	
 	@Bean
 	public SessionFactory sessionFactory(HibernateEntityManagerFactory hemf) {
 		return hemf.getSessionFactory();
