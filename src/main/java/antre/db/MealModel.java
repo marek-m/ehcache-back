@@ -1,4 +1,4 @@
-package antre.model;
+package antre.db;
 
 import java.util.List;
 
@@ -7,15 +7,17 @@ public class MealModel {
 	private String id;
 	private String name;
 	private List<String> images;
+	private String date;
 	private Double price;
 	
 	
-	public MealModel(String id, String name, List<String> images, Double price) {
+	public MealModel(String id, String name, List<String> images, String date, Double price) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.images = images;
 		this.price = price;
+		this.date = date;
 	}
 
 	public String getId() {
@@ -50,6 +52,14 @@ public class MealModel {
 	public String toString() {
 		return "Meal [id=" + id + ", name=" + name + ", images=" + images
 				+ ", price=" + price + "]";
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 	
 	

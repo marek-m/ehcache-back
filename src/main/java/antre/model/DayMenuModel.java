@@ -3,17 +3,19 @@ package antre.model;
 import java.util.Date;
 import java.util.List;
 
-public class DayMenu {
+import antre.db.MealModel;
+
+public class DayMenuModel {
 
 	private Date date;
 	private List<MealModel> meals;
 	
-	public DayMenu(Date date, List<MealModel> meals) {
+	public DayMenuModel(Date date, List<MealModel> meals) {
 		super();
 		this.date = date;
 	}
 	
-	public DayMenu() {
+	public DayMenuModel() {
 		super();
 	}
 

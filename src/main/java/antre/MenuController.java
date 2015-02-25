@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import antre.model.MealModel;
+import antre.db.MealModel;
+import antre.model.DayMenuModel;
 import antre.service.MealService;
 
 @RestController
@@ -28,8 +29,8 @@ public class MenuController {
 	}
 	
 	@RequestMapping("/week") 
-	public List<MealModel> getThisWeek() {
-		List<MealModel> result = mealService.getThisWeek();
+	public List<DayMenuModel> getThisWeek() {
+		List<DayMenuModel> result = mealService.getThisWeek();
 		return result;
 	}
 }

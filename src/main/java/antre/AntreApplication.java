@@ -29,8 +29,8 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import antre.model.DayMenu;
-import antre.model.MealModel;
+import antre.db.MealModel;
+import antre.model.DayMenuModel;
 import antre.model.googlesearchapi.GoogleSearchObject;
 import antre.model.googlesearchapi.Item;
 import antre.service.MealService;
@@ -46,10 +46,10 @@ public class AntreApplication {
 	@Autowired
 	MealService mealService;
 
-	
+	@Deprecated
 	@RequestMapping("/week")
-	List<DayMenu> getTodayMenu() throws ParseException {
-		List<DayMenu> result = new ArrayList<DayMenu>();
+	List<DayMenuModel> getTodayMenu() throws ParseException {
+		List<DayMenuModel> result = new ArrayList<DayMenuModel>();
 		Document doc = null;
 		try {
 			doc = Jsoup.connect("http://www.wantrejce.pl").get();
@@ -61,7 +61,7 @@ public class AntreApplication {
 		Elements days = doc.select("ul#subList2 li:matches(Pon|Wt|Śr|Czw|Pią)");
 
 		for (Element day : days) {
-			DayMenu dayMenu = new DayMenu();
+			DayMenuModel dayMenu = new DayMenuModel();
 			List<MealModel> meals = new ArrayList<MealModel>();
 			System.out.println(day.toString());
 			Element dayname = day.select("h2").first(); // DATA
@@ -73,7 +73,7 @@ public class AntreApplication {
 			System.out.println("---------------------");
 
 			// soup
-			meals.add(new MealModel("", daymenu.first().text(), null, null));
+			meals.add(new MealModel("", daymenu.first().text(), null, null, null));
 
 			Double mealPrice = 0.0d;
 			Double mealWithoutSoup = 0.0d;
@@ -95,7 +95,7 @@ public class AntreApplication {
 
 					System.out.println(mealPrice + "," + mealWithoutSoup);
 				} else {
-					meals.add(new MealModel("", mealName, null, null));
+					meals.add(new MealModel("", mealName, null, null,  null));
 				}
 			}
 			for (MealModel m : meals) {
