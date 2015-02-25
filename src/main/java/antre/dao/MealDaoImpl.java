@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
@@ -66,6 +67,14 @@ public class MealDaoImpl extends MealDao {
 			save(m, session);
 		}
 		
+	}
+
+	@Override
+	public void dbTest() {
+		Session session = sf.openSession();
+		Query q = session.createQuery("SELECT 1 FROM Meal");
+		q.uniqueResult();
+		session.close();
 	}
 
 }

@@ -12,5 +12,6 @@ public abstract class MealDao extends DaoTemplate<Meal>{
 	public abstract List<Meal> getThisWeek();
 	public abstract List<Meal> getThisDay();
 	public abstract void saveList(List<Meal> meals, Session session);
+	public abstract void dbTest();
 	
 }
