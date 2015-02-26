@@ -31,6 +31,7 @@ import antre.db.Meal;
 import antre.db.MealModel;
 import antre.model.DayMenuModel;
 import antre.model.googlesearchapi.GoogleSearchObject;
+import antre.model.googlesearchapi.Item;
 
 import com.google.gson.Gson;
 
@@ -73,17 +74,17 @@ public class MealServiceImpl implements MealService {
 	// TODO powielona metoda refaktor pozniej
 	@Override
 	public List<DayMenuModel> getThisWeek() {
-		
+
 		List<Day> days = dayDao.getThisWeek();
 		List<DayMenuModel> result = new ArrayList<DayMenuModel>();
-		System.out.println("DAYS:"+days.size());
-		
+		System.out.println("DAYS:" + days.size());
+
 		// TRANSLATe TO MODEL
 		for (Day d : days) {
 			DayMenuModel dayMenu = new DayMenuModel();
 			List<MealModel> dayList = new ArrayList<MealModel>();
 			dayMenu.setDate(d.getDate());
-			
+
 			for (Meal m : d.getMeals()) {
 				String imgs = m.getImages();
 				String[] urls = imgs.split("\\|");
@@ -91,7 +92,8 @@ public class MealServiceImpl implements MealService {
 				for (String url : urls) {
 					images.add(url);
 				}
-				dayList.add(new MealModel(m.getId() + "", m.getName(), images, dateFormat.format(m.getDate()), m.getPrice()));
+				dayList.add(new MealModel(m.getId() + "", m.getName(), images,
+						dateFormat.format(m.getDate()), m.getPrice()));
 			}
 			dayMenu.setMeals(dayList);
 			result.add(dayMenu);
@@ -118,16 +120,17 @@ public class MealServiceImpl implements MealService {
 		List<Meal> meals = new ArrayList<Meal>();
 		List<Day> daysInWeek = new ArrayList<Day>();
 
-		System.out.println("Init days:"+days.size());
+		System.out.println("Init days:" + days.size());
 		for (Element day : days) {
 			Elements daymenu = day.select("h4>p:has(strong)");
 			Set<Meal> daymeals = new HashSet<Meal>();
 			// soup
-			Meal soup = new Meal(daymenu.first().text(), "", null, cal.getTime());
+			Meal soup = new Meal(daymenu.first().text(), "", null,
+					cal.getTime());
 
 			Double mealPrice = 0.0d;
 			Double mealWithoutSoup = 0.0d;
-			System.out.println("Meals for day: "+daymenu.size());
+			System.out.println("Meals for day: " + daymenu.size());
 			for (int i = 1; i < daymenu.size(); i++) {
 				String mealName = daymenu.get(i).text();
 				if (mealName.isEmpty())
@@ -150,10 +153,10 @@ public class MealServiceImpl implements MealService {
 			for (Meal m : daymeals) {
 				m.setPrice(mealWithoutSoup);
 			}
-			//set price to soup and add to set
+			// set price to soup and add to set
 			soup.setPrice(mealPrice - mealWithoutSoup);
 			daymeals.add(soup);
-			
+
 			Day dayInWeek = new Day();
 			dayInWeek.setDate(cal.getTime());
 			dayInWeek.setMeals(daymeals);
@@ -166,16 +169,16 @@ public class MealServiceImpl implements MealService {
 		}
 		// got meals for whole week
 		// get images from google
-		// TODO
-		// for(Meal m : meals) {
-		// GoogleSearchObject gso = getImagesForDescription(m.getName());
-		// String images = "";
-		// for(Item item : gso.getItems()) {
-		// System.out.println("GOT IMAGE:"+item.getLink());
-		// images += item.getLink() + "|";
-		// }
-		// m.setImages(images);
-		// }
+
+		for (Meal m : meals) {
+			GoogleSearchObject gso = getImagesForDescription(m.getName());
+			String images = "";
+			for (Item item : gso.getItems()) {
+				System.out.println("GOT IMAGE:" + item.getLink());
+				images += item.getLink() + "|";
+			}
+			m.setImages(images);
+		}
 
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();

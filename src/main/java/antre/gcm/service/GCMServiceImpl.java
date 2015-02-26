@@ -93,7 +93,7 @@ public class GCMServiceImpl implements GCMService {
 		threadPool.execute(new Runnable() {
 
 			public void run() {
-				Message message = new Message.Builder().build();
+				Message message = new Message.Builder().addData("TEST", "HELLO TEST MESSAGE").build();
 				MulticastResult multicastResult;
 				try {
 					multicastResult = sender.send(message, devices, 5);
