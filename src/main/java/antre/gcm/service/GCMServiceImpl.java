@@ -51,7 +51,7 @@ public class GCMServiceImpl implements GCMService {
 	// MOCK
 	private List<String> getDevices() {
 		List<String> result = new ArrayList<String>();
-		result.add("REGISTERED_ID");
+		result.add("APA91bFpmjfdN3DwR2SaXY4EqWalz_MItyG2DP2PXF4HoFpmjw68I6kuhAu9Ej1p9qGreN_NF12RBxcg8pUqlzjJZdvu5263PX5uekU-ZAlHhiHAvq7RTrZoFd-yxEj7nObvmrTnDSGTeMMRgx2TduZte5iOcvchZw");
 		return result;
 	}
 
