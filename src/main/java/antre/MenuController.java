@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import antre.db.MealModel;
+import antre.gcm.service.GCMService;
 import antre.model.DayMenuModel;
 import antre.service.MealService;
 
@@ -16,6 +17,9 @@ public class MenuController {
 
 	@Autowired
 	MealService mealService;
+	
+	@Autowired
+	GCMService gcmService;
 	
 	@RequestMapping("/initWeek")
 	public void initWeek() throws Exception {
@@ -32,5 +36,10 @@ public class MenuController {
 	public List<DayMenuModel> getThisWeek() {
 		List<DayMenuModel> result = mealService.getThisWeek();
 		return result;
+	}
+	
+	@RequestMapping("/sendGCM")
+	public void sendGCM() {
+		gcmService.test();
 	}
 }

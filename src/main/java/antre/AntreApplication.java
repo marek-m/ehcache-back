@@ -1,9 +1,6 @@
 package antre;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,17 +22,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import antre.db.MealModel;
 import antre.model.DayMenuModel;
-import antre.model.googlesearchapi.GoogleSearchObject;
-import antre.model.googlesearchapi.Item;
 import antre.service.MealService;
-
-import com.google.gson.Gson;
 
 @ComponentScan(basePackages = { "antre" })
 @EnableScheduling

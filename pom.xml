@@ -87,6 +87,11 @@
 			<artifactId>typetools</artifactId>
 			<version>0.4.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.android.gcm</groupId>
+			<artifactId>gcm-server</artifactId>
+			<version>1.0.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -96,7 +101,11 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-
 	</build>
-
+	<repositories>
+		<repository>
+			<id>gcm-server-repository</id>
+			<url>https://raw.githubusercontent.com/slorber/gcm-server-repository/master/releases/</url>
+		</repository>
+	</repositories>
 </project>

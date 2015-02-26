@@ -39,19 +39,57 @@ public class Person implements Serializable {
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date lastLogin;
 	
-	@ManyToOne
-	@JoinColumn(name = "day_id")
-	private Day day;
-
+	@Column(nullable = true)
+	private String gcmRegistrationId;
 	
 	
-	public Day getDay() {
-		return day;
+
+	public Person(String login, String password) {
+		super();
+		this.login = login;
+		this.password = password;
 	}
 
-	public void setDay(Day day) {
-		this.day = day;
+
+	public String getLogin() {
+		return login;
 	}
+
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+
+	public String getGcmRegistrationId() {
+		return gcmRegistrationId;
+	}
+
+
+	public void setGcmRegistrationId(String gcmRegistrationId) {
+		this.gcmRegistrationId = gcmRegistrationId;
+	}
+
 
 	public Person() {
 		super();
