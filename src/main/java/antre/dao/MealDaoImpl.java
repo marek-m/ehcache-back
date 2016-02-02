@@ -12,6 +12,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import antre.db.Meal;
@@ -75,6 +76,15 @@ public class MealDaoImpl extends MealDao {
 		Query q = session.createQuery("SELECT 1 FROM Meal");
 		q.uniqueResult();
 		session.close();
+	}
+
+	@Override
+	public List<Meal> getByNameFilter(String nameFilter, Session session) {
+		return (List<Meal>) session.createCriteria(Meal.class)
+				.add( Restrictions.like("name", nameFilter+"%"))
+				.setCacheable(true)
+				.setCacheRegion("mealCache")
+				.list();
 	}
 
 }

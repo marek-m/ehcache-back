@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,11 +17,13 @@ import java.util.regex.Pattern;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import antre.dao.DayDao;
@@ -30,10 +32,6 @@ import antre.db.Day;
 import antre.db.Meal;
 import antre.db.MealModel;
 import antre.model.DayMenuModel;
-import antre.model.googlesearchapi.GoogleSearchObject;
-import antre.model.googlesearchapi.Item;
-
-import com.google.gson.Gson;
 
 @Service
 public class MealServiceImpl implements MealService {
@@ -168,17 +166,7 @@ public class MealServiceImpl implements MealService {
 			cal.add(Calendar.DAY_OF_WEEK, 1);
 		}
 		// got meals for whole week
-		// get images from google
 
-		for (Meal m : meals) {
-			GoogleSearchObject gso = getImagesForDescription(m.getName());
-			String images = "";
-			for (Item item : gso.getItems()) {
-				System.out.println("GOT IMAGE:" + item.getLink());
-				images += item.getLink() + "|";
-			}
-			m.setImages(images);
-		}
 
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
@@ -193,17 +181,6 @@ public class MealServiceImpl implements MealService {
 			throw e;
 		}
 
-	}
-
-	private GoogleSearchObject getImagesForDescription(String description)
-			throws Exception {
-		description = URLEncoder.encode(description, "UTF-8");
-		String json = readUrl(createAddressForImageSearch(description));
-		Gson gson = new Gson();
-		GoogleSearchObject page = gson.fromJson(json, GoogleSearchObject.class);
-
-		Thread.sleep(3500); // GOOGLE RESTRICTION 1request/user/1second
-		return page;
 	}
 
 	private static String readUrl(String urlString) throws Exception {
@@ -224,20 +201,97 @@ public class MealServiceImpl implements MealService {
 		}
 	}
 
-	private static String createAddressForImageSearch(String description) {
-		String cx = "016012965037667193616:tvoagxbs5sy";
-		String cr = "pl";
-		String q = description;
-		String searchType = "image";
-		int num = 5;
-		String fields = "items/link";
-		String key = "AIzaSyBGIvRqlYoec4l6n-TUoMsRV3qrb4XSlCI";
+	@Override
+	public void initDb() throws Exception {
 
-		String result = "https://www.googleapis.com/customsearch/v1?" + "cx="
-				+ cx + "&" + "cr=pl&" + "q=" + description + "&"
-				+ "searchType=" + searchType + "&" + "num=" + num + "&"
-				+ "fields=" + fields + "&" + "key=" + key;
+		Set<Meal> meals = new HashSet<Meal>();
+		List<Day> days = new ArrayList<Day>();
 
+		for(int i=0;i<100;i++) {
+			Day newDay = new Day();
+			newDay.setDate(new Date());
+			days.add(newDay);
+		}
+		System.out.println("Init days:" + days.size());
+		for(Day d : days) {
+			meals = new HashSet<Meal>();
+			for(int j=0;j<1000;j++) {
+				Meal newMeal = new Meal("meal"+j, "", (double)1*j, new Date());
+				meals.add(newMeal);
+			}
+			d.setMeals(meals);
+		}
+		// got meals for whole week
+
+
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			dayDao.saveList(days, session);
+			tx.commit();
+			session.close();
+		} catch (Exception e) {
+			System.out.println("Exception:" + e.getMessage());
+			tx.rollback();
+			session.close();
+			throw e;
+		}
+	}
+
+	@Override
+	public void addNewMealToDay(Long dayId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Boolean updateMealName(Long mealId, String newName) {
+		
+		Session session = sf.openSession();
+		Meal m = (Meal) session.createCriteria(Meal.class)
+				.add(Restrictions.eq("id", mealId)).uniqueResult();
+		m.setName(newName);
+
+		
+		Transaction tx = session.beginTransaction();
+		try {
+			session.update(m);
+			tx.commit();
+			session.close();
+		} catch (Exception e) {
+			System.out.println("Exception:" + e.getMessage());
+			tx.rollback();
+			session.close();
+			throw e;
+		}
+		return true;
+		
+	}
+
+	@Override
+	public List<MealModel> getMealsFromDay(Long dayId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<MealModel> getAllMeals() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<MealModel> getMealsByName(String name) {
+		List<MealModel> result = new ArrayList<MealModel>();
+		
+		Session session = sf.openSession();
+		List<Meal> meals = mealDao.getByNameFilter(name, session);
+		
+		for(Meal m : meals) {
+			result.add(new MealModel(m.getId()+"", m.getName(), new ArrayList<String>(0), m.getDate().toString(), m.getPrice()));
+		}
+		
+		session.close();
 		return result;
 	}
 
